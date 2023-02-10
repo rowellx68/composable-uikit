@@ -1,0 +1,9 @@
+--enable blankLineAfterImports
+--enable blankLinesAroundMark
+--enable initCoderUnavailable
+--enable isEmpty
+--enable markTypes
+--enable sortedSwitchCases
+--indent 2
+--importgrouping alpha
+--marktypes never

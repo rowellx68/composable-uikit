@@ -27,6 +27,73 @@ public extension ComposableViewController {
   func wrapInNavigationController() -> UINavigationController {
     .init(rootViewController: self)
   }
+
+  func barButtonItem(systemItem: UIBarButtonItem.SystemItem, action: Feature.Action, menu: UIMenu? = nil) -> UIBarButtonItem {
+    UIBarButtonItem(
+      systemItem: systemItem,
+      primaryAction: self.action(for: action),
+      menu: menu
+    )
+  }
+
+  func barButtonItem(image: UIImage?, action: Feature.Action, menu: UIMenu? = nil) -> UIBarButtonItem {
+    UIBarButtonItem(
+      image: image,
+      primaryAction: self.action(for: action),
+      menu: menu
+    )
+  }
+
+  func barButtonItem(title: String, action: Feature.Action, menu: UIMenu? = nil) -> UIBarButtonItem {
+    UIBarButtonItem(
+      title: title,
+      image: nil,
+      primaryAction: self.action(for: action),
+      menu: menu
+    )
+  }
+
+  func barButtonItem(title: String, image: UIImage?, action: Feature.Action, menu: UIMenu? = nil) -> UIBarButtonItem {
+    UIBarButtonItem(
+      title: title,
+      image: image,
+      primaryAction: self.action(for: action),
+      menu: menu
+    )
+  }
+
+  func barButtonMenu(title: String, menu: UIMenu) -> UIBarButtonItem {
+    UIBarButtonItem(title: title, menu: menu)
+  }
+
+  func barButtonMenu(image: UIImage?, children: [UIMenuElement]) -> UIBarButtonItem {
+    UIBarButtonItem(image: image, menu: .init(children: children))
+  }
+
+  func action(for action: Feature.Action) -> UIAction {
+    UIAction { [weak self] _ in
+      self?.viewStore.send(action)
+    }
+  }
+
+  func action(for action: Feature.Action, title: String, image: UIImage?, attributes: UIMenuElement.Attributes = .init()) -> UIAction {
+    UIAction(
+      title: title,
+      image: image,
+      attributes: attributes
+    ) { [weak self] _ in
+      self?.viewStore.send(action)
+    }
+  }
+
+  func alertAction(for action: Feature.Action, title: String, style: UIAlertAction.Style) -> UIAlertAction {
+    UIAlertAction(
+      title: title,
+      style: style
+    ) { [weak self] _ in
+      self?.viewStore.send(action)
+    }
+  }
 }
 
 public extension UINavigationController {
@@ -34,56 +101,5 @@ public extension UINavigationController {
     navigationBar.prefersLargeTitles = largeTitle
 
     return self
-  }
-}
-
-public extension ViewStore {
-  func barButtonItem(image: UIImage?, action: ViewAction, menu: UIMenu? = nil) -> UIBarButtonItem {
-    .init(image: image, primaryAction: .init(handler: { [weak self] _ in
-      self?.send(action)
-    }), menu: menu)
-  }
-
-  func barButtonItem(title: String, action: ViewAction, menu: UIMenu? = nil) -> UIBarButtonItem {
-    .init(title: title, image: nil, primaryAction: .init(handler: { [weak self] _ in
-      self?.send(action)
-    }), menu: menu)
-  }
-
-  func barButtonItem(title: String, image: UIImage?, action: ViewAction, menu: UIMenu? = nil) -> UIBarButtonItem {
-    .init(title: title, image: image, primaryAction: .init(handler: { [weak self] _ in
-      self?.send(action)
-    }), menu: menu)
-  }
-
-  func barButtonMenu(title: String, menu: UIMenu) -> UIBarButtonItem {
-    .init(title: title, menu: menu)
-  }
-
-  func barButtonMenu(image: UIImage?, children: [UIMenuElement]) -> UIBarButtonItem {
-    .init(image: image, menu: .init(children: children))
-  }
-
-  func action(for action: ViewAction) -> UIAction {
-    .init { [weak self] _ in
-      self?.send(action)
-    }
-  }
-
-  func action(
-    for action: ViewAction,
-    title: String,
-    image: UIImage?,
-    attributes: UIMenuElement.Attributes = .init()
-  ) -> UIAction {
-    .init(title: title, image: image, attributes: attributes) { [weak self] _ in
-      self?.send(action)
-    }
-  }
-
-  func alertAction(for action: ViewAction, title: String, style: UIAlertAction.Style) -> UIAlertAction {
-    .init(title: title, style: style) { [weak self] _ in
-      self?.send(action)
-    }
   }
 }
