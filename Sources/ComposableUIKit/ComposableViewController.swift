@@ -85,15 +85,6 @@ public extension ComposableViewController {
       self?.viewStore.send(action)
     }
   }
-
-  func alertAction(for action: Feature.Action, title: String, style: UIAlertAction.Style) -> UIAlertAction {
-    UIAlertAction(
-      title: title,
-      style: style
-    ) { [weak self] _ in
-      self?.viewStore.send(action)
-    }
-  }
 }
 
 public extension UINavigationController {
