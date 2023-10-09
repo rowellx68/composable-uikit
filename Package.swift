@@ -20,7 +20,7 @@ let package = Package(
     // .package(url: /* package url */, from: "1.0.0"),
     .package(
       url: "https://github.com/pointfreeco/swift-composable-architecture",
-      branch: "navigation-beta"
+      .upToNextMajor(from: "1.0.0")
     ),
   ],
   targets: [

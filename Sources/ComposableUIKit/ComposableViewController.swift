@@ -6,14 +6,14 @@ import Combine
 import ComposableArchitecture
 import UIKit
 
-open class ComposableViewController<Feature: ReducerProtocol>: UIViewController where Feature.State: Equatable {
+open class ComposableViewController<Feature: Reducer>: UIViewController where Feature.State: Equatable {
   open var store: StoreOf<Feature>
   open var viewStore: ViewStoreOf<Feature>
   open var cancellables: Set<AnyCancellable> = []
 
   public init(store: StoreOf<Feature>) {
     self.store = store
-    viewStore = ViewStore(store)
+    viewStore = ViewStore(store, observe: { $0 })
     super.init(nibName: nil, bundle: nil)
   }
 
